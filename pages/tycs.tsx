@@ -37,9 +37,8 @@ const TerminosYCondiciones: NextPage<Props> = ({ data }: Props) => {
 
 // Aquí debemos agregar el método para obtener la información
 // de la API
-export const getStaticProps: GetStaticProps = async (context) => {
-  const lan = context.locale;
-  const res = await fetch("https://ctd-fe3-ecommerce.vercel.app/api/tycs/");
+export const getStaticProps: GetStaticProps = async () => {
+  const res = await fetch("https://ctd-fe3-ecommerce.vercel.app/api/tycs");
   const data: TyCsAPIResponse = await res.json();
   return {
     props: { data },
