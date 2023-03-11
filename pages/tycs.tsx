@@ -2,6 +2,8 @@ import { GetStaticProps, NextPage } from "next";
 import { TyC, TyCsAPIResponse } from "../types";
 import styles from "../styles/TYC.module.css";
 import Head from "next/head";
+import { TEXTS_BY_LANGUAGE } from "../locale/constants";
+import { useRouter } from "next/router";
 
 interface Props {
   data: TyCsAPIResponse;
@@ -9,6 +11,8 @@ interface Props {
 
 const TerminosYCondiciones: NextPage<Props> = ({ data }: Props) => {
   if (!data) return null;
+
+  const language = useRouter().locale as keyof typeof TEXTS_BY_LANGUAGE;
 
   const { version, tycs } = data;
 
@@ -22,13 +26,13 @@ const TerminosYCondiciones: NextPage<Props> = ({ data }: Props) => {
   return (
     <div className={styles.tycContainer}>
       <Head>
-        <title>Tienda Libre - Términos y Condiciones</title>
+        <title>Tienda Libre - {TEXTS_BY_LANGUAGE[language].MAIN.TYCS}</title>
         <meta
           name="description"
-          content="términos y condiciones de Tienda Libre"
+          content={`${TEXTS_BY_LANGUAGE[language].MAIN.TYCS} de Tienda Libre`}
         />
       </Head>
-      <h2>Terminos y Concidiones</h2>
+      <h2>{TEXTS_BY_LANGUAGE[language].MAIN.TYCS}</h2>
       <p>Versión: {version}</p>
       {tycs.map(renderTyc)}
     </div>
@@ -37,8 +41,11 @@ const TerminosYCondiciones: NextPage<Props> = ({ data }: Props) => {
 
 // Aquí debemos agregar el método para obtener la información
 // de la API
-export const getStaticProps: GetStaticProps = async () => {
-  const res = await fetch("https://ctd-fe3-ecommerce.vercel.app/api/tycs");
+export const getStaticProps: GetStaticProps = async (context) => {
+  const len = context.locale;
+  const res = await fetch(
+    "https://ctd-fe3-ecommerce.vercel.app/api/tycs/" + len
+  );
   const data: TyCsAPIResponse = await res.json();
   return {
     props: { data },

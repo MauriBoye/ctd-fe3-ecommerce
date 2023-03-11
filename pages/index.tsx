@@ -1,6 +1,8 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { TEXTS_BY_LANGUAGE } from "../locale/constants";
 import styles from "../styles/Home.module.css";
 import { Product, ProductsAPIResponse } from "../types";
 
@@ -13,6 +15,8 @@ interface Props {
 
 const Home: NextPage<Props> = ({ data }: Props) => {
   if (!data) return null;
+
+  const language = useRouter().locale as keyof typeof TEXTS_BY_LANGUAGE;
 
   const formatPrice: (price: number) => string = (price) =>
     price?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -62,14 +66,16 @@ const Home: NextPage<Props> = ({ data }: Props) => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Tienda Libre - Productos Destacados</title>
+        <title>
+          Tienda Libre - {TEXTS_BY_LANGUAGE[language].MAIN.PRODUCTS}
+        </title>
         <meta
           name="description"
-          content="listado de productos destacados de Tienda Libre"
+          content={`${TEXTS_BY_LANGUAGE[language].MAIN.PRODUCTS} de Tienda Libre`}
         />
       </Head>
       <main className={styles.main}>
-        <h1>Productos destacados</h1>
+        <h1>{TEXTS_BY_LANGUAGE[language].MAIN.PRODUCTS}</h1>
         <div className={styles.grid}>{data.map(renderProductCard)}</div>
       </main>
       <footer className={styles.footer}>
@@ -89,9 +95,10 @@ const Home: NextPage<Props> = ({ data }: Props) => {
 
 // Aquí debemos agregar el método para obtener la información
 // de la API
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const len = context.locale;
   const res = await fetch(
-    "https://clase9-mesa15.vercel.app/api/products/es-ES"
+    "https://clase9-mesa15.vercel.app/api/products/" + len
   );
   const data = await res.json();
   return {
