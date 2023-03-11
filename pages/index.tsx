@@ -89,7 +89,8 @@ const Home: NextPage<Props> = ({ data }: Props) => {
 
 // Aquí debemos agregar el método para obtener la información
 // de la API
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const lan = context.locale;
   const res = await fetch(
     "https://clase9-mesa15.vercel.app/api/products/es-ES"
   );

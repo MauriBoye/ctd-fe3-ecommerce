@@ -4,6 +4,8 @@ const nextConfig = {
   images: {
     domains: ["fakestoreapi.com"],
   },
+  locales: ["es-ES", "en-US", "pt-BR"],
+  defaultLocale: "es-ES",
 };
 
 // eslint-disable-next-line no-undef

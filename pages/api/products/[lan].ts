@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { products } from "./db";
+import { products } from "../db";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  res.status(200).json(products);
+  const { lan } = req.query;
+  res.status(200).json(products[lan as string]);
 }
