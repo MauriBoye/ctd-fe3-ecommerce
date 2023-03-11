@@ -70,7 +70,7 @@ const Home: NextPage<Props> = ({ data }: Props) => {
       </Head>
       <main className={styles.main}>
         <h1>Productos destacados</h1>
-        <div className={styles.grid}>{data?.map(renderProductCard)}</div>
+        <div className={styles.grid}>{data.map(renderProductCard)}</div>
       </main>
       <footer className={styles.footer}>
         <span>Powered by</span>
@@ -90,7 +90,9 @@ const Home: NextPage<Props> = ({ data }: Props) => {
 // Aquí debemos agregar el método para obtener la información
 // de la API
 export const getServerSideProps: GetServerSideProps = async () => {
-  const res = await fetch("https://clase9-mesa15.vercel.app/api/products/");
+  const res = await fetch(
+    "https://clase9-mesa15.vercel.app/api/products/es-ES"
+  );
   const data = await res.json();
   return {
     props: { data },
