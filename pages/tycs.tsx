@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import React from "react";
 import { TyC, TyCsAPIResponse } from "../types";
 import styles from "../styles/TYC.module.css";
 import Head from "next/head";
